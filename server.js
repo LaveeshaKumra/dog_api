@@ -15,7 +15,7 @@ var mysql = require('mysql');
 var con = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'hh',
     database: 'dog_app'
 });
 app.use(express.json());
