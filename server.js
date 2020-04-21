@@ -53,6 +53,30 @@ app.post('/register', function (req, res) {
     var sql = "insert into users (email,password) values (?,?)";
     con.query(sql, [req.body.email, req.body.password], function (err, result) {
         res.send("done");
+        con.query("select userid from users where email=?",[req.body.email],function(rq,response){
+            if(response[0]){
+                var string = JSON.stringify(response[0]);
+            var objectValue = JSON.parse(string);
+            userid = objectValue['userid'];
+            console.log(userid); 
+                con.query("insert into records_durations values (?,?,?,?,?,?,?)",[userid,576,48,12,744,72,720],function(requ,resp){
+                    if(err) throw err;
+                    else{
+                        console.log("inserted");
+                    }
+                })
+            }
+            else{
+                res.console("error");
+            }
+
+            con.query("insert  into basic_details (userid) values (?)",[userid],function(err,result){
+                if(err) throw err;
+                else{
+                    console.log("done");
+                }
+            })
+        })
         //add to basic details and to records durations 
     });
 });
@@ -432,6 +456,12 @@ app.post("/getimage", function (req, res) {
             con.query(sql, [userid], function (err, result) {
                 if (err) {
                     throw (err);
+                }
+                var string = JSON.stringify(result[0]);
+                    var objectValue = JSON.parse(string);
+                    image = objectValue['image'];
+                if(image==null){
+                    res.send(null);
                 }
                 else {
                     fs.readFile(path.join(__dirname, '/public/', result[0].image), function (error, data) {
