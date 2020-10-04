@@ -44,7 +44,10 @@ app.post('/newpass', function (req, res) {
     var sql = "update users set password = ? where email= ?";
     con.query(sql, [req.body.password, req.body.email], function (err, result) {
         if (err) throw err;
-        else res.send(result);
+        else {
+            console.log(result);
+            res.send(result);
+        }
     })
 })
 
